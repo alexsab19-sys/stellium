@@ -66,3 +66,28 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
+
+app.post("/full-natal", async (req, res) => {
+  try {
+    const auth = {
+      headers: { "Content-Type": "application/json" },
+      auth: {
+        username: process.env.ASTRO_USER || "",
+        password: process.env.ASTRO_PASS || ""
+      }
+    };
+
+    const [planets, houses] = await Promise.all([
+      axios.post("https://json.astrologyapi.com/v1/planets/tropical", req.body, auth),
+      axios.post("https://json.astrologyapi.com/v1/house_cusps/tropical", req.body, auth)
+    ]);
+
+    res.json({
+      planets: planets.data,
+      houses: houses.data
+    });
+  } catch (err) {
+    console.error("FULL NATAL ERROR:", err?.response?.data || err.message);
+    res.status(500).json({ error: "Error generating full natal chart" });
+  }
+});

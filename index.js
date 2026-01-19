@@ -17,25 +17,23 @@ app.get("/", (req, res) => {
 // Natal chart
 app.post("/natal", async (req, res) => {
   try {
-const r = await axios.post(
-  "https://json.astrologyapi.com/v1/natal_chart",
-  req.body,
-  {
-    headers: {
-      "Content-Type": "application/json"
-    },
-    auth: {
-      username: String(process.env.ASTRO_USER),
-      password: String(process.env.ASTRO_PASS)
-    }
-  }
-);
-
+    const r = await axios.post(
+      "https://json.astrologyapi.com/v1/natal_chart",
+      req.body,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        auth: {
+          username: process.env.ASTRO_USER || "",
+          password: process.env.ASTRO_PASS || ""
         }
       }
     );
+
     res.json(r.data);
-  } catch (e) {
+  } catch (err) {
+    console.error("NATAL ERROR:", err?.response?.data || err.message);
     res.status(500).json({ error: "Error generando carta natal" });
   }
 });
@@ -44,28 +42,27 @@ const r = await axios.post(
 app.post("/horoscope", async (req, res) => {
   try {
     const r = await axios.post(
-  "https://json.astrologyapi.com/v1/natal_chart",
-  req.body,
-  {
-    headers: {
-      "Content-Type": "application/json"
-    },
-    auth: {
-      username: String(process.env.ASTRO_USER),
-      password: String(process.env.ASTRO_PASS)
-    }
-  }
-);
+      "https://json.astrologyapi.com/v1/western_horoscope",
+      req.body,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        auth: {
+          username: process.env.ASTRO_USER || "",
+          password: process.env.ASTRO_PASS || ""
         }
       }
     );
+
     res.json(r.data);
-  } catch (e) {
+  } catch (err) {
+    console.error("HOROSCOPE ERROR:", err?.response?.data || err.message);
     res.status(500).json({ error: "Error generando horóscopo" });
   }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log("Running on", PORT);
+  console.log("Server running on port", PORT);
 });

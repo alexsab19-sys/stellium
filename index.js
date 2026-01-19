@@ -17,13 +17,20 @@ app.get("/", (req, res) => {
 // Natal chart
 app.post("/natal", async (req, res) => {
   try {
-    const r = await axios.post(
-      "https://json.astrologyapi.com/v1/natal_chart",
-      req.body,
-      {
-        auth: {
-          username: process.env.ASTRO_USER,
-          password: process.env.ASTRO_PASS
+const r = await axios.post(
+  "https://json.astrologyapi.com/v1/natal_chart",
+  req.body,
+  {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    auth: {
+      username: String(process.env.ASTRO_USER),
+      password: String(process.env.ASTRO_PASS)
+    }
+  }
+);
+
         }
       }
     );
@@ -37,12 +44,18 @@ app.post("/natal", async (req, res) => {
 app.post("/horoscope", async (req, res) => {
   try {
     const r = await axios.post(
-      "https://json.astrologyapi.com/v1/western_horoscope",
-      req.body,
-      {
-        auth: {
-          username: process.env.ASTRO_USER,
-          password: process.env.ASTRO_PASS
+  "https://json.astrologyapi.com/v1/natal_chart",
+  req.body,
+  {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    auth: {
+      username: String(process.env.ASTRO_USER),
+      password: String(process.env.ASTRO_PASS)
+    }
+  }
+);
         }
       }
     );
